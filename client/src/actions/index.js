@@ -2,7 +2,8 @@ import axios from 'axios';
 import {
   FETCH_USER,
   FETCH_SURVEYS,
-  DELETE_SURVEY
+  DELETE_SURVEY,
+  SORT_SURVEYS
 } from './types';
 
 // when an action go through redux-thunk, if it see a function is returned, it calls that function right away
@@ -34,4 +35,14 @@ export const deleteSurvey = surveyId => async dispatch => {
   const res = await axios.delete(`/api/surveys/delete/${surveyId}`);
 
   dispatch({ type: DELETE_SURVEY, payload: surveyId });
+}
+
+export const sortSurvey = (sortProperty, sortType) => dispatch => {
+  dispatch({
+    type: SORT_SURVEYS,
+    payload: {
+      sortProperty,
+      sortType
+    }
+  });
 }

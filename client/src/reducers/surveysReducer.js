@@ -1,4 +1,8 @@
-import { FETCH_SURVEYS, DELETE_SURVEY } from '../actions/types';
+import {
+  FETCH_SURVEYS,
+  DELETE_SURVEY,
+  SORT_SURVEYS
+} from '../actions/types';
 
 export default function(state = [], action) {
   switch(action.type) {
