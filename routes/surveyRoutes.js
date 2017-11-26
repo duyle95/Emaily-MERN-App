@@ -14,11 +14,21 @@ module.exports = app => {
     res.send('Thanks for voting!');
   });
 
+  app.delete('/api/surveys/delete/:surveyId', requireLogin, async (req, res) => {
+    const p = new Path('/api/surveys/delete/:surveyId'),
+          fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+    const match = p.test(new URL(fullUrl).pathname);
+    console.log(match.surveyId);
+    await Survey.deleteOne({ _id: match.surveyId});
+
+    res.send({});
+  });
+
   // all processing logic with webhooks, filtering.
   app.post('/api/surveys/webhooks', (req, res) => {
     const p = new Path('/api/surveys/:surveyId/:choice');
 
-  const events = _.chain(req.body)
+    const events = _.chain(req.body)
       .map(({ email, url }) => {
         // return a object with properties: surveyId, choice
         const match = p.test(new URL(url).pathname);
