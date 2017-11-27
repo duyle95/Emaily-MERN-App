@@ -23,6 +23,10 @@ class SurveyList extends Component {
             <p className="right">
               Sent On: { new Date(survey.dateSent).toLocaleDateString() }
             </p>
+            <br/>
+            <p className="right">
+              Last Responded: { survey.lastResponded ? new Date(survey.lastResponded).toLocaleDateString() : 'No respond was sent' }
+            </p>
           </div>
           <div className="card-action">
             <a href="#yes">Yes: {survey.yes}</a>
