@@ -61,10 +61,25 @@ module.exports = app => {
   });
 
   app.get('/api/surveys', requireLogin, async (req, res) => {
+    const redis = require('redis');
+    const redisUrl = 'redis://127.0.0.1:6379';
+    const client = redis.createClient(redisUrl);
+    const util = require('util');
+    client.get = util.promisify(client.get);
+
+    const cachedSurveys = await client.get(req.user.id);
+
+    if (cachedSurveys) {
+      console.log('SERVING FROM CACHE');
+      return res.send(JSON.parse(cachedSurveys));
+    }
+
     const surveys = await Survey.find({ _user: req.user.id })
       .select({ recipients: false });
-
+    console.log('SERVING FROM MONGODB');
     res.send(surveys);
+
+    client.set(req.user.id, JSON.stringify(surveys));
   });
 
   app.post('/api/surveys', requireLogin, requireCredits, async (req, res) => {
