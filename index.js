@@ -7,9 +7,10 @@ const keys = require('./config/keys');
 require('./models/User');
 require('./models/Survey');
 require('./services/passport');
+require('./services/cache');
 
 mongoose.connect(keys.mongoURI);
-
+mongoose.Promise = global.Promise;
 const app = express();
 
 app.use(bodyParser.json());
